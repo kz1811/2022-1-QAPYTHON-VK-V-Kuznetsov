@@ -11,7 +11,6 @@ class TestHomework1(BaseCase):
         assert "dashboard" in self.driver.current_url
 
     # @pytest.mark.skip
-    # @pytest.mark.parametrize('execution_number', range(10))
     @pytest.mark.UI
     def test_logout(self):
         self.log_in()
@@ -35,9 +34,7 @@ class TestHomework1(BaseCase):
         assert tab in self.driver.current_url
 
     # @pytest.mark.skip
-    #@pytest.mark.parametrize('execution_number', range(20))
     @pytest.mark.UI
-    #def test_change_contact_info(self, execution_number):
     def test_change_contact_info(self):
         self.log_in()
         assert self.fill_contact_info()
