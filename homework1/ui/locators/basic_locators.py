@@ -8,12 +8,11 @@ LOG_IN_FORM_BUTTON_LOCATOR = (By.XPATH, "//div[contains(@class, 'authForm-module
 
 # for log out
 HEADER_RIGHT_MENU_BUTTON_LOCATOR = (By.XPATH, "//div[contains(@class, 'right-module-rightButton')]")
-HEADER_LIST_ITEM_LOGOUT_LOCATOR = (By.XPATH, "//li[contains(@class, 'rightMenu-module-rightMenuItem')][2]/a")
+HEADER_LIST_ITEM_LOGOUT_LOCATOR = (By.XPATH, "//a[@href='/logout']")
 
 # for_change_info
 CONTACT_INFO_NAME_FIELD_LOCATOR = (By.XPATH, "//div[@data-name='fio']//input")
 CONTACT_INFO_PHONE_FIELD_LOCATOR = (By.XPATH, "//div[@data-name='phone']//input")
-# CONTACT_INFO_ADD_MAIL_BUTTON_LOCATOR = (By.XPATH, "//*[contains(text(), 'Добавить ещё')]")
 CONTACT_INFO_ADD_MAIL_BUTTON_LOCATOR = (By.CSS_SELECTOR, ".js-add-row .clickable-button__spinner")
 CONTACT_INFO_ADD_MAIL_FIELD_LOCATOR = (By.XPATH, "//*[@data-email-index='1']//input")
 CONTACT_INFO_ADD_MAIL2_FIELD_LOCATOR = (By.XPATH, "//*[@data-email-index='0']//input")

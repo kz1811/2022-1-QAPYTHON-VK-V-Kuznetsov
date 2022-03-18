@@ -3,14 +3,11 @@ import pytest
 
 
 class TestHomework1(BaseCase):
-
-    # @pytest.mark.skip
     @pytest.mark.UI
     def test_login(self):
         self.log_in()
         assert "dashboard" in self.driver.current_url
 
-    # @pytest.mark.skip
     @pytest.mark.UI
     def test_logout(self):
         self.log_in()
@@ -18,13 +15,11 @@ class TestHomework1(BaseCase):
         url_logout_page = self.driver.current_url
         assert (url_logout_page == "https://target.my.com/")
 
-    # @pytest.mark.skip
     @pytest.mark.UI
     @pytest.mark.parametrize(
         'tab',
         [
             pytest.param('billing'),
-            # pytest.param('tools'),
             pytest.param('profile'),
         ]
     )
@@ -33,7 +28,6 @@ class TestHomework1(BaseCase):
         self.switch_str(tab)
         assert tab in self.driver.current_url
 
-    # @pytest.mark.skip
     @pytest.mark.UI
     def test_change_contact_info(self):
         self.log_in()

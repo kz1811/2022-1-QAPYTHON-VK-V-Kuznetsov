@@ -23,6 +23,14 @@ def rand_gen():
 random_gen = rand_gen()
 
 
+def get_login():
+    data = []
+    with open("homework1/log1n_data.txt") as f:
+        for line in f:
+            data.append(line)
+    return data
+
+
 class BaseCase:
     driver = None
 
@@ -48,8 +56,6 @@ class BaseCase:
         for i in range(CLICK_RETRY):
             try:
                 elem = self.find(locator)
-                # if i<2:
-                #    self.driver.refresh()
                 self.click(locator)
                 return
             except StaleElementReferenceException:
@@ -65,8 +71,11 @@ class BaseCase:
     def log_in(self):
         self.find(basic_locators.LOG_IN_BUTTON_LOCATOR)
         self.click(basic_locators.LOG_IN_BUTTON_LOCATOR)
-        self.find(basic_locators.LOG_IN_FORM_LOGIN_LOCATOR).send_keys('vlad.lavashov@yahoo.com')
-        self.find(basic_locators.LOG_IN_FORM_PASSWORD_LOCATOR).send_keys('PBpMt6$mbCf83wC')
+        self.find(basic_locators.LOG_IN_FORM_LOGIN_LOCATOR).clear()
+        self.find(basic_locators.LOG_IN_FORM_PASSWORD_LOCATOR).clear()
+        dc = get_login()
+        self.find(basic_locators.LOG_IN_FORM_LOGIN_LOCATOR).send_keys(dc[0])
+        self.find(basic_locators.LOG_IN_FORM_PASSWORD_LOCATOR).send_keys(dc[1])
         self.find(basic_locators.LOG_IN_FORM_BUTTON_LOCATOR)
         self.click(basic_locators.LOG_IN_FORM_BUTTON_LOCATOR)
 
