@@ -5,8 +5,7 @@ import pytest
 class TestHomework1(BaseCase):
     @pytest.mark.UI
     def test_login(self):
-        self.log_in()
-        assert "dashboard" in self.driver.current_url
+        assert self.log_in()
 
     @pytest.mark.UI
     def test_logout(self):

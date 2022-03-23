@@ -78,6 +78,9 @@ class BaseCase:
         self.find(basic_locators.LOG_IN_FORM_PASSWORD_LOCATOR).send_keys(dc[1])
         self.find(basic_locators.LOG_IN_FORM_BUTTON_LOCATOR)
         self.click(basic_locators.LOG_IN_FORM_BUTTON_LOCATOR)
+        result = "dashboard" in self.driver.current_url
+        assert result
+        return result
 
     def log_out(self):
         self.click_repeat(basic_locators.HEADER_RIGHT_MENU_BUTTON_LOCATOR)
