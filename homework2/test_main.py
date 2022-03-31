@@ -37,6 +37,7 @@ class TestHomework2(BaseCase):
         with allure.step('Going to segments page'):
             self.main_page.go_to_segments_page()
         assert self.segments_page.create_segment()
+        self.segments_page.delete_segment()
 
     @pytest.mark.UI
     def test_delete_segment(self):

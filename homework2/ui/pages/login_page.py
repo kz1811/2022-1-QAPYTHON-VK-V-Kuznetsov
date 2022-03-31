@@ -19,7 +19,7 @@ class LoginPage(BasePage):
             passw.clear()
             passw.send_keys(password)
         self.click(self.locators.LOG_IN_FORM_BUTTON_LOCATOR)
-        assert 'login' not in self.driver.current_url
+        assert 'target.my.com/dashboard' in self.driver.current_url
         return MainPage(self.driver)
 
     @allure.step('Test: input wrong password')
@@ -34,8 +34,7 @@ class LoginPage(BasePage):
             passw.clear()
             passw.send_keys(password + self.rand_gen())
         self.click(self.locators.LOG_IN_FORM_BUTTON_LOCATOR)
-
-        return 'login' in self.driver.current_url
+        return 'account.my.com/login/?error_code=1' in self.driver.current_url
 
     @allure.step('Test: input wrong form of login')
     def wrong_form_login(self, login, password):

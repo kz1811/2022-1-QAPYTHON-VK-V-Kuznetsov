@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 
 
 class BasePageLocators:
-    PAGE_LOCATOR = (By.XPATH, '//div[@class="layout-float__container js-layout-container _animated"]')
+    pass
 
 
 class LoginPageLocators(BasePageLocators):

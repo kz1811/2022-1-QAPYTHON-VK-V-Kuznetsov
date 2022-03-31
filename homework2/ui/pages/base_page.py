@@ -1,4 +1,6 @@
 import allure
+import random
+import string
 from ui.locators.basic_locators import BasePageLocators
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -54,7 +56,5 @@ class BasePage:
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
 
     def rand_gen(self, num=20):
-        import random
-        import string
         name = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(num))
         return name

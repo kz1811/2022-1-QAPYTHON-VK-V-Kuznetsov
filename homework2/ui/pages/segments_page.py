@@ -41,5 +41,6 @@ class SegmentsPage(MainPage):
         with allure.step('Check for deleting name in page'):
             self.driver.refresh()
             self.find(self.locators.SEGMENTS_EXISTENT_SEGMENTS_TABLE_LOCATOR)
-
+        with allure.step('Asserting'):
+            assert curr_segment_name not in self.driver.page_source
         return curr_segment_name not in self.driver.page_source
