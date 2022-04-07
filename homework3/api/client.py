@@ -9,18 +9,6 @@ logger = logging.getLogger('test')
 MAX_RESPONSE_LENGTH = 300
 
 
-class InvalidLoginException(Exception):
-    pass
-
-
-class RespondErrorException(Exception):
-    pass
-
-
-class ResponseStatusCodeException(Exception):
-    pass
-
-
 class ApiClient:
 
     def rand_gen(self):
@@ -36,7 +24,13 @@ class ApiClient:
         self.csrf_token = None
 
     def get_token(self):
-        res = requests.get('https://account.my.com/login')
+
+        chk1 = True
+        res = None
+        while chk1:
+            res = requests.get('https://account.my.com/login')
+            if 'set-cookie' in res.headers.keys():
+                chk1 = False
 
         self.csrf_token = [c for c in res.headers['Set-cookie'].split(';') if 'csrf' in c][0].split('=')[-1]
 
@@ -57,14 +51,15 @@ class ApiClient:
         }
 
         res = requests.post('https://auth-ac.my.com/auth', data=data, headers=headers)
-
+        print(res.status_code)
+        # while res.status_code != "304":
+        #     res = requests.post('https://auth-ac.my.com/auth', data=data, headers=headers)
         cookies_string = ''
         for i in range(res.history.__len__()):
             if 'set-cookie' in res.history[i].headers.keys():
                 cookies_string = cookies_string + res.history[i].headers['set-cookie']
 
         cookies_string = cookies_string.split(';')
-
         cookies_dict = {
             'mc': [c for c in cookies_string if 'mc=' in c][0].split('=')[-1],
             'mrcu': [c for c in cookies_string if 'mrcu=' in c][0].split('=')[-1],
@@ -76,14 +71,18 @@ class ApiClient:
         self.session.cookies = cookiejar_from_dict(cookies_dict)
 
         url = urljoin(self.base_url, 'csrf/')
-        res = self.session.get(url)
-        if 'Set-Cookie' in res.headers.keys():
-            cookies_dict['csrftoken'] = [c for c in res.headers['Set-Cookie'].split(';') if 'csrftoken' in c][0].split('=')[-1]
-            self.csrf_token = cookies_dict['csrftoken']
-            cookies_dict['z'] = [c for c in res.headers['Set-Cookie'].split(';') if 'z=' in c][0].split('=')[-1]
-            cookies_dict['sdc'] = [c for c in res.history[3].headers['Set-cookie'].split(';') if 'sdc=' in c][0].split('=')[-1]
-        else:
-            raise RuntimeError(f'error {res} {res.headers} {res.json()}')
+
+        chk1 = True
+        res = None
+        while chk1:
+            res = self.session.get(url)
+            if 'set-cookie' in res.headers.keys():
+                chk1 = False
+
+        cookies_dict['csrftoken'] = [c for c in res.headers['Set-Cookie'].split(';') if 'csrftoken' in c][0].split('=')[-1]
+        self.csrf_token = cookies_dict['csrftoken']
+        cookies_dict['z'] = [c for c in res.headers['Set-Cookie'].split(';') if 'z=' in c][0].split('=')[-1]
+        cookies_dict['sdc'] = [c for c in res.history[3].headers['Set-cookie'].split(';') if 'sdc=' in c][0].split('=')[-1]
 
         self.session.cookies = cookiejar_from_dict(cookies_dict)
 
