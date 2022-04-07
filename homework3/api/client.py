@@ -65,7 +65,6 @@ class ApiClient:
 
         cookies_string = cookies_string.split(';')
 
-        print(cookies_string)
         cookies_dict = {
             'mc': [c for c in cookies_string if 'mc=' in c][0].split('=')[-1],
             'mrcu': [c for c in cookies_string if 'mrcu=' in c][0].split('=')[-1],
@@ -78,16 +77,15 @@ class ApiClient:
 
         url = urljoin(self.base_url, 'csrf/')
         res = self.session.get(url)
-
-        cookies_dict['csrftoken'] = [c for c in res.headers['Set-Cookie'].split(';') if 'csrftoken' in c][0].split('=')[-1]
-        self.csrf_token = cookies_dict['csrftoken']
-        cookies_dict['z'] = [c for c in res.headers['Set-Cookie'].split(';') if 'z=' in c][0].split('=')[-1]
-        cookies_dict['sdc'] = [c for c in res.history[3].headers['Set-cookie'].split(';') if 'sdc=' in c][0].split('=')[-1]
-        print(cookies_dict)
+        if 'Set-Cookie' in res.headers.keys():
+            cookies_dict['csrftoken'] = [c for c in res.headers['Set-Cookie'].split(';') if 'csrftoken' in c][0].split('=')[-1]
+            self.csrf_token = cookies_dict['csrftoken']
+            cookies_dict['z'] = [c for c in res.headers['Set-Cookie'].split(';') if 'z=' in c][0].split('=')[-1]
+            cookies_dict['sdc'] = [c for c in res.history[3].headers['Set-cookie'].split(';') if 'sdc=' in c][0].split('=')[-1]
+        else:
+            raise RuntimeError(f'error {res} {res.headers} {res.json()}')
 
         self.session.cookies = cookiejar_from_dict(cookies_dict)
-
-        # return
 
     def post_create_segment(self, name=None):
 
@@ -122,7 +120,7 @@ class ApiClient:
 
         if id_segment is None and name is None:
             res = self.session.get(url)
-            number = random.randint(0, len(res.json()['items']))
+            number = random.randint(0, len(res.json()['items'])-1)
             id_segment = res.json()['items'][number]['id']
 
         elif id_segment is None:

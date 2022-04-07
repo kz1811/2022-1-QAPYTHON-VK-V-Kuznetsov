@@ -78,7 +78,10 @@ def all_drivers(config, request):
 
 @pytest.fixture(scope='session')
 def credentials():
-    with open('files/log1n_data', 'r') as f:
+
+    abs_path = os.path.abspath(r'./files/log1n_data')
+
+    with open(abs_path, 'r') as f:
         user = f.readline().strip()
         password = f.readline().strip()
         return user, password
