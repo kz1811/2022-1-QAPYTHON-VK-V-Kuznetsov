@@ -2,10 +2,7 @@ import os
 import shutil
 import sys
 import pytest
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
+
 from api.client import ApiClient
 
 

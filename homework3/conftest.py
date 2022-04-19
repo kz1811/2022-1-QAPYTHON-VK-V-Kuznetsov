@@ -1,13 +1,5 @@
 import logging
 from fixtures import *
-from api.client import ApiClient
-
-def pytest_addoption(parser):
-    parser.addoption('--browser', default='chrome')
-    parser.addoption('--url', default='https://target.my.com/')
-    parser.addoption('--debug_log', action='store_true')
-    parser.addoption('--selenoid', action='store_true')
-    parser.addoption('--vnc', action='store_true')
 
 
 @pytest.fixture(scope='session')
