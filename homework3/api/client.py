@@ -11,8 +11,13 @@ MAX_RESPONSE_LENGTH = 300
 
 class ApiClient:
 
-    def rand_gen(self):
-        return ''.join(random.choice(string.ascii_lowercase) for i in range(random.randrange(30)))
+    def rand_gen(self, str=None):
+        if str == 'num':
+            return int("".join(random.choice(string.digits) for i in range(9)))
+        else:
+            return ''.join(random.choice(string.ascii_lowercase) for i in range(random.randrange(30)))
+
+
 
     def __init__(self, base_url, user, password, ):
         self.base_url = base_url
@@ -51,9 +56,9 @@ class ApiClient:
         }
 
         res = requests.post('https://auth-ac.my.com/auth', data=data, headers=headers)
-        print(res.status_code)
-        # while res.status_code != "304":
-        #     res = requests.post('https://auth-ac.my.com/auth', data=data, headers=headers)
+
+        assert res.status_code == 200, f'Bad auth: {res.status_code}'
+
         cookies_string = ''
         for i in range(res.history.__len__()):
             if 'set-cookie' in res.history[i].headers.keys():
@@ -93,6 +98,8 @@ class ApiClient:
         if name is None:
             name = self.rand_gen()
 
+        object_id = self.rand_gen('num')
+
         data = {
             "name": f"{name}",
             "pass_condition": 1,
@@ -103,7 +110,7 @@ class ApiClient:
                     "left": 365,
                     "right": 0
                 },
-                "object_id": 73656,
+                "object_id": f"{object_id}",
                 "object_type": "remarketing_player"
             }]}
 
@@ -111,14 +118,17 @@ class ApiClient:
             'X-CSRFToken': f'{self.csrf_token}',
         }
 
-        return self.session.post(url, json=data, headers=headers)
+        return self.session.post(url, json=data, headers=headers), name
 
     def post_delete_segment(self, id_segment=None, name=None):
 
-        url = urljoin(self.base_url, f'api/v2/remarketing/segments.json')
+        url_all_segments = urljoin(self.base_url, f'api/v2/remarketing/segments.json')
+
+        total_number_before = self.session.get(url_all_segments).json()['count']
 
         if id_segment is None and name is None:
-            res = self.session.get(url)
+            res = self.session.get(url_all_segments)
+            total_number_before = res.json()['count']
             number = random.randint(0, len(res.json()['items'])-1)
             id_segment = res.json()['items'][number]['id']
 
@@ -131,8 +141,11 @@ class ApiClient:
 
         url = urljoin(self.base_url, f'api/v2/remarketing/segments/{id_segment}.json')
         res = self.session.delete(url, headers=headers)
-        assert res.status_code == 204, 'Deletion not completed'
-        return res
+
+        resp_all = self.session.get(url_all_segments)
+        total_number_after = resp_all.json()['count']
+
+        return res.status_code, total_number_before > total_number_after
 
     def get_id_by_name(self, name):
 
@@ -144,3 +157,26 @@ class ApiClient:
         res = self.session.get(url, params=params)
         id_segment = res.json()['items'][0]['id']
         return id_segment
+
+    def is_segment_exist(self, id_segment=None, name=None):
+
+        url = urljoin(self.base_url, f'api/v2/remarketing/segments.json')
+
+        res = None
+
+        if name is None:
+            params = {
+                '_id': id_segment,
+            }
+            res = self.session.get(url, params=params)
+
+        elif id_segment is None:
+            params = {
+                '_name': name,
+            }
+            res = self.session.get(url, params=params)
+
+        if res.json()['count'] != 0:
+            return True
+        else:
+            return False
