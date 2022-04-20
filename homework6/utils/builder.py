@@ -5,7 +5,7 @@ from script import Parser
 class MysqlBuilder:
     def __init__(self, client):
         self.client = client
-        self.parse = Parser("access.log")
+        self.parse = Parser("homework6/access.log")
 
     def create_table_requests_total(self):
 
