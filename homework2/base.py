@@ -5,9 +5,7 @@ from _pytest.fixtures import FixtureRequest
 import pytest
 from ui.pages.base_page import BasePage
 from ui.pages.main_page import MainPage
-from ui.pages.segments_page import SegmentsPage
 from ui.pages.login_page import LoginPage
-from ui.pages.campaign_page import CampaignPage
 
 
 class BaseCase:
@@ -28,10 +26,6 @@ class BaseCase:
 
         self.driver.refresh()
         self.main_page = MainPage(driver)
-
-        self.base_page: BasePage = (request.getfixturevalue('base_page'))
-        self.segments_page: SegmentsPage = (request.getfixturevalue('segments_page'))
-        self.campaign_page: CampaignPage = (request.getfixturevalue('campaign_page'))
 
     @pytest.fixture(scope='function', autouse=True)
     def ui_report(self, driver, request, temp_dir):

@@ -11,6 +11,7 @@ class LoginPageLocators(BasePageLocators):
     LOG_IN_FORM_PASSWORD_LOCATOR = (By.XPATH, "//input[contains(@class, 'authForm-module-input')][@name='password']")
     LOG_IN_FORM_BUTTON_LOCATOR = (By.XPATH, "//div[contains(@class, 'authForm-module-button')]")
     LOG_IN_FORM_ERROR_MESSAGE_LOCATOR = (By.XPATH, "//div[contains(@class, 'notify-module-error')]")
+    LOG_IN_FAILED_LOCATOR = (By.CSS_SELECTOR, ".mcPage .formMsg_text")
 
 
 class MainPageLocators(BasePageLocators):

@@ -1,6 +1,8 @@
+import time
 import allure
 import random
 import string
+from ui.exceptions.page_exceptions import PageNotOpenedException
 from ui.locators.basic_locators import BasePageLocators
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,9 +11,19 @@ from selenium.common.exceptions import StaleElementReferenceException, ElementCl
 
 class BasePage:
     locators = BasePageLocators()
+    url = None
 
     def __init__(self, driver):
         self.driver = driver
+        self.is_opened()
+
+    def is_opened(self, timeout=45):
+        started = time.time()
+        while time.time() - started < timeout:
+            if self.url in self.driver.current_url:
+                return True
+        raise PageNotOpenedException(f"Page is not opened: url was not valid or base element did not loaded; "
+                                     f"current url: {self.driver.current_url}")
 
     def wait(self, timeout=None):
         if timeout is None:
@@ -48,7 +60,7 @@ class BasePage:
                 if i == CLICK_RETRY - 1:
                     raise
             except ElementClickInterceptedException:
-                 if i == CLICK_RETRY - 1:
+                if i == CLICK_RETRY - 1:
                     raise
 
     @allure.step('Scroll to element')

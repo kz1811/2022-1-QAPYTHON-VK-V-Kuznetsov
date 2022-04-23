@@ -1,11 +1,14 @@
 import time
 import allure
-from ui.pages.main_page import MainPage
+from ui.pages.base_page import BasePage
 from ui.locators.basic_locators import CampaignPageLocators
 
 
-class CampaignPage(MainPage):
+class CampaignPage(BasePage):
     locators = CampaignPageLocators()
+
+    base_element = locators.CAMPAIGN_ADD_CAMPAIGN_BUTTON_LOCATOR
+    url = 'https://target.my.com/dashboard'
 
     @allure.step('Creating new campaign')
     def create_new_campaign(self, path):

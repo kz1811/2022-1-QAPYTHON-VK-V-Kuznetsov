@@ -1,0 +1,2 @@
+class PageNotOpenedException(Exception):
+    pass

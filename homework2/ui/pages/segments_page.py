@@ -1,10 +1,12 @@
 import allure
-from ui.pages.main_page import MainPage
+from ui.pages.base_page import BasePage
 from ui.locators.basic_locators import SegmentsPageLocators
 
 
-class SegmentsPage(MainPage):
+class SegmentsPage(BasePage):
     locators = SegmentsPageLocators()
+
+    url = 'https://target.my.com/segments'
 
     @allure.step('Creating new segment')
     def create_segment(self):

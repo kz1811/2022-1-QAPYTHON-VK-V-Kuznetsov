@@ -1,11 +1,16 @@
 import time
 import allure
+from ui.pages.campaign_page import CampaignPage
 from ui.pages.login_page import LoginPage
 from base import BaseCase
 import pytest
 import os
 
+from ui.pages.main_page import MainPage
+from ui.pages.segments_page import SegmentsPage
 
+
+@pytest.mark.skip
 class TestHomework2WrongAutentification(BaseCase):
     autorize = False
 
@@ -29,18 +34,24 @@ class TestHomework2(BaseCase):
     @pytest.mark.UI
     def test_create_ad_company(self, file_path):
         with allure.step('Going to campaign page'):
-            self.main_page.go_to_campaign_page()
-        assert self.campaign_page.create_new_campaign(file_path)
+
+            campaign_page = self.main_page.go_to_campaign_page()
+
+        assert campaign_page.create_new_campaign(file_path)
 
     @pytest.mark.UI
     def test_create_segment(self):
         with allure.step('Going to segments page'):
-            self.main_page.go_to_segments_page()
-        assert self.segments_page.create_segment()
-        self.segments_page.delete_segment()
+
+            segments_page = self.main_page.go_to_segments_page()
+
+        assert segments_page.create_segment()
+        segments_page.delete_segment()
 
     @pytest.mark.UI
     def test_delete_segment(self):
         with allure.step('Going to segments page'):
-            self.main_page.go_to_segments_page()
-        assert self.segments_page.delete_segment()
+
+            segments_page = self.main_page.go_to_segments_page()
+
+        assert segments_page.delete_segment()
