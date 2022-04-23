@@ -7,22 +7,21 @@ parser = OptionParser()
 
 parser.add_option('-j', '--json', dest='json', action='store_true', default=False)
 
+methods_list = ['POST', 'GET', 'HEAD', 'PUT', 'DELETE']
+
 num_of_requests = {}
 file_list = []
 with open("access.log") as log:
     answer_1 = 0
     for i in log:
         try:
-            answer_1+=1
+            answer_1 += 1
             read_str = re.findall(r'(\d+.\d+.\d+.\d+) (\w+|\-) (\w+|\-) \[(.+)\] \"(.+)\" (\d+|\-) (\d+|\-) \"(.*)\" '
                                   r'\"(.*)\"', i.strip())[0]
 
-            ###########################################################################
-
-            if len(read_str[4].split(' ')[0]) > 10:
+            if read_str[4].split(' ')[0] not in methods_list:
                 raise Exception
 
-            ###########################################################################
             file_list.append({})
             file_list[-1]['ip'] = read_str[0]
             file_list[-1]['time'] = read_str[4]
@@ -35,6 +34,7 @@ with open("access.log") as log:
                 num_of_requests[f'{file_list[-1]["request_url"]}'] += 1
             else:
                 num_of_requests[f'{file_list[-1]["request_url"]}'] = 1
+
         except Exception:
             pass
 
