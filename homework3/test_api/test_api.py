@@ -23,5 +23,5 @@ class TestApi:
         resp, name = api_client.post_create_segment()
         assert resp.status_code == 200 and api_client.is_segment_exist(name=name), 'Failed creating segment'
         # deleting segment
-        status_code, is_deleted = api_client.post_delete_segment()
+        status_code, is_deleted = api_client.post_delete_segment(id_segment=resp.json()['id'])
         assert status_code == 204 and is_deleted, 'Failed deleting segment'
