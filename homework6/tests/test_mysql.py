@@ -45,27 +45,27 @@ class MyTest:
 class TestSqlOrm(MyTest):
     table = None
 
-    def test_get_tables_1(self):
+    def test_get_table_requests_total(self):
         self.builder.create_table_requests_total()
         count = self.table_requests_total()
         assert len(count) == 1
 
-    def test_get_tables_2(self):
+    def test_get_table_requests_by_type(self):
         self.builder.create_table_requests_by_type()
         count = self.get_table_requests_by_type()
         assert len(count) == 4
 
-    def test_get_tables_3(self, number=10):
+    def test_get_table_frequesnt_requests(self, number=10):
         self.builder.create_table_most_frequent_requests(number)
         count = self.get_table_most_frequent_requests()
         assert len(count) == number
 
-    def test_get_tables_4(self, number=5):
+    def test_get_table_longest_requests(self, number=5):
         self.builder.create_table_longest_with_4XX(number)
         count = self.get_table_longest_with_4XX()
         assert len(count) == number
 
-    def test_get_tables_5(self, number=5):
+    def test_get_table_high_number_of_requests(self, number=5):
         self.builder.create_table_users_with_highest_number_with_req_code_5XX(number)
         count = self.get_table_users_with_highest_number_of_req_code_5XX()
         assert len(count) == number
