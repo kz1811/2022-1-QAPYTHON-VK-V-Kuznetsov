@@ -44,14 +44,16 @@ class Socket:
 
         self.client.send(request.encode())
 
-        data = self.get_data_from_socket()
-        self.client.close()
+        try:
+            data = self.get_data_from_socket()
+        except:
+            self.client.close()
+            raise RuntimeError('Program was aborted because of problems with reading from socket')
 
         return data
 
     def get_data_from_socket(self):
         total_data = []
-        # try:
         while True:
             # читаем данные из сокета до тех пор пока они там есть
             data = self.client.recv(4096)
@@ -60,8 +62,6 @@ class Socket:
                 total_data.append(data.decode())
             else:
                 break
-        # except timeout:
-        #     pass
 
         total_data = ''.join(total_data).splitlines()
         status_code = int(total_data[0].split(' ')[1])

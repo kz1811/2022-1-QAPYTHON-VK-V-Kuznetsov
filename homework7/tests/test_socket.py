@@ -1,7 +1,9 @@
 import pytest
 import settings
 from http_client_socket.http_socket import Socket
-from utils.value_gen import Generator
+from faker import Faker
+
+fake = Faker()
 
 
 class TestSocket:
@@ -12,7 +14,7 @@ class TestSocket:
 class TestSocketPostRequests(TestSocket):
 
     def test_post_request(self, clear_data):
-        name = Generator().name()
+        name = fake.first_name()
         answer_post = self.client.send_post_request(name)
         assert answer_post['status_code'] == 201 and answer_post['data']['user_id'] > 0
 
@@ -21,13 +23,12 @@ class TestSocketPostRequests(TestSocket):
 class TestSocketGetRequests(TestSocket):
 
     def test_get_request_negative(self, clear_data):
-        name = Generator().name()
+        name = fake.first_name()
         answer_get = self.client.send_get_request(name)
         assert answer_get['status_code'] == 404
 
     def test_get_request_positive(self, clear_data):
-        name = Generator().name()
-
+        name = fake.first_name()
         answer_post = self.client.send_post_request(name)
         assert answer_post['status_code'] == 201 and answer_post['data']['user_id'] > 0
         answer_get = self.client.send_get_request(name)
@@ -38,9 +39,8 @@ class TestSocketGetRequests(TestSocket):
 class TestSocketPutRequests(TestSocket):
 
     def test_put_request_positive(self, clear_data):
-        name = Generator().name()
-        surname = Generator().surname()
-
+        name = fake.first_name()
+        surname = fake.last_name()
         answer_post = self.client.send_post_request(name)
         assert answer_post['status_code'] == 201 and answer_post['data']['user_id'] > 0
 
@@ -53,9 +53,8 @@ class TestSocketPutRequests(TestSocket):
                answer_post['data']['user_id'] == answer_get['data']['user_id']
 
     def test_put_request_negative(self, clear_data):
-        name = Generator().name()
-        surname = Generator().surname()
-
+        name = fake.first_name()
+        surname = fake.last_name()
         answer_put = self.client.send_put_request(name, surname)
         assert answer_put['status_code'] == 404
 
@@ -64,7 +63,7 @@ class TestSocketPutRequests(TestSocket):
 class TestSocketDeleteRequests(TestSocket):
 
     def test_delete_request_positive(self, clear_data):
-        name = Generator().name()
+        name = fake.first_name()
 
         answer_post = self.client.send_post_request(name)
         assert answer_post['status_code'] == 201 and answer_post['data']['user_id'] > 0
@@ -76,7 +75,7 @@ class TestSocketDeleteRequests(TestSocket):
         assert answer_get['status_code'] == 404
 
     def test_delete_request_negative(self, clear_data):
-        name = Generator().name()
+        name = fake.first_name()
 
         answer_delete = self.client.send_delete_request(name)
         assert answer_delete['status_code'] == 404
