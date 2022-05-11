@@ -8,11 +8,11 @@ def pytest_configure(config):
         mysql_client.create_db()
     mysql_client.connect(db_created=True)
     if not hasattr(config, 'workerinput'):
-        mysql_client.create_table_Total()
-        mysql_client.create_table_Total_by_type()
-        mysql_client.create_table_Top_frequent_requests()
-        mysql_client.create_table_Top_5_freq_requests_with_code_4XX()
-        mysql_client.create_table_Top_5_IPs_with_highest_number_with_req_code_5XX()
+        mysql_client.create_table('Total')
+        mysql_client.create_table('Total_by_type')
+        mysql_client.create_table('Top_frequent_requests')
+        mysql_client.create_table('Top_long_requests_with_code_4XX')
+        mysql_client.create_table('Top_IPs_with_highest_number_of_req_code_5XX')
 
     config.mysql_client = mysql_client
 

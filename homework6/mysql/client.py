@@ -3,6 +3,7 @@ from sqlalchemy import inspect
 from sqlalchemy.orm import sessionmaker
 from models.models import Base
 
+
 class MysqlClient:
 
     def __init__(self, db_name, user, password):
@@ -34,26 +35,6 @@ class MysqlClient:
     def create_table(self, name):
         if not inspect(self.engine).has_table(name):
             Base.metadata.tables[name].create(self.engine)
-
-    def create_table_Total(self):
-        if not inspect(self.engine).has_table('Total'):
-            Base.metadata.tables['Total'].create(self.engine)
-
-    def create_table_Total_by_type(self):
-        if not inspect(self.engine).has_table('Total_by_type'):
-            Base.metadata.tables['Total_by_type'].create(self.engine)
-
-    def create_table_Top_frequent_requests(self):
-        if not inspect(self.engine).has_table('Top_frequent_requests'):
-            Base.metadata.tables['Top_frequent_requests'].create(self.engine)
-
-    def create_table_Top_5_freq_requests_with_code_4XX(self):
-        if not inspect(self.engine).has_table('Top_5_freq_requests_with_code_4XX'):
-            Base.metadata.tables['Top_5_long_requests_with_code_4XX'].create(self.engine)
-
-    def create_table_Top_5_IPs_with_highest_number_with_req_code_5XX(self):
-        if not inspect(self.engine).has_table('Top_5_IPs_with_highest_number_with_req_code_5XX'):
-            Base.metadata.tables['Top_5_IPs_with_highest_number_of_req_code_5XX'].create(self.engine)
 
     def execute_query(self, query, fetch=False):
         res = self.connection.execute(query)

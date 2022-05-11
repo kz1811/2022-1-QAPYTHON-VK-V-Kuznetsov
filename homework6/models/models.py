@@ -44,11 +44,11 @@ class MostFrequentRequestsModel(Base):
 
 class LongestRequestsModel(Base):
 
-    __tablename__ = 'Top_5_long_requests_with_code_4XX'
+    __tablename__ = 'Top_long_requests_with_code_4XX'
     __table_args__ = {'mysql_charset': 'utf8'}
 
     def __repr__(self):
-        return f"<Top_5_long_requests_with_code_4XX: url={self.number_of_requests}, request_size={self.request_size}," \
+        return f"<Top_long_requests_with_code_4XX: url={self.number_of_requests}, request_size={self.request_size}," \
                f" status_code={self.status_code}, ip={self.ip}>"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -60,11 +60,11 @@ class LongestRequestsModel(Base):
 
 class HighestNumberRequestsIpModel(Base):
 
-    __tablename__ = 'Top_5_IPs_with_highest_number_of_req_code_5XX'
+    __tablename__ = 'Top_IPs_with_highest_number_of_req_code_5XX'
     __table_args__ = {'mysql_charset': 'utf8'}
 
     def __repr__(self):
-        return f"<Top_5_IPs_with_highest_number_of_req_code_5XX: ip={self.ip}, " \
+        return f"<Top_IPs_with_highest_number_of_req_code_5XX: ip={self.ip}, " \
                f"number_of_requests={self.number_of_requests}>"
 
     id = Column(Integer, primary_key=True, autoincrement=True)

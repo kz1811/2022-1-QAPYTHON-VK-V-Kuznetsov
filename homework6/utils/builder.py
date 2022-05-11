@@ -34,10 +34,10 @@ class MysqlBuilder:
 
         return by_type
 
-    def create_table_10_most_frequent_requests(self):
+    def create_table_most_frequent_requests(self, number):
 
         most_freq = None
-        res = self.parse.get_most_frequent_requests(self.parse.num_of_req_data, 10)
+        res = self.parse.get_most_frequent_requests(self.parse.num_of_req_data, number)
 
         for i in res.keys():
 
@@ -50,27 +50,27 @@ class MysqlBuilder:
 
         return most_freq
 
-    def create_table_5_longest_with_4XX(self):
+    def create_table_longest_with_4XX(self, number):
 
-        table_5_long_req = None
-        res = self.parse.get_longest_requests(self.parse.get_requests_with_code(self.parse.file_data, 400), 5)
+        table_long_req = None
+        res = self.parse.get_longest_requests(self.parse.get_requests_with_code(self.parse.file_data, 400), number)
 
         for i in res:
-            table_5_long_req = LongestRequestsModel(
+            table_long_req = LongestRequestsModel(
                 url=i['request_url'],
                 status_code=i['response_code'],
                 request_size=i['request_size'],
                 ip=i['ip'],
             )
-            self.client.session.add(table_5_long_req)
+            self.client.session.add(table_long_req)
         self.client.session.commit()
 
-        return table_5_long_req
+        return table_long_req
 
-    def create_table_5_users_with_highest_number_of_req_code_5XX(self):
+    def create_table_users_with_highest_number_with_req_code_5XX(self, number):
 
         highest_num_of_req = None
-        res = self.parse.get_users_with_highest_number_of_req(self.parse.get_requests_with_code(self.parse.file_data, 500), 5)
+        res = self.parse.get_users_with_highest_number_of_req(self.parse.get_requests_with_code(self.parse.file_data, 500), number)
 
         for i in res.keys():
             highest_num_of_req = HighestNumberRequestsIpModel(

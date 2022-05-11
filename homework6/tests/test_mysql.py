@@ -26,45 +26,46 @@ class MyTest:
         res = self.mysql.session.query(TotalRequestsByTypeModel).filter_by(**filters)
         return res.all()
 
-    def get_table_10_most_frequent_requests(self, **filters):
+    def get_table_most_frequent_requests(self, **filters):
         self.mysql.session.commit()
         res = self.mysql.session.query(MostFrequentRequestsModel).filter_by(**filters)
         return res.all()
 
-    def get_table_5_longest_with_4XX(self, **filters):
+    def get_table_longest_with_4XX(self, **filters):
         self.mysql.session.commit()
         res = self.mysql.session.query(LongestRequestsModel).filter_by(**filters)
         return res.all()
 
-    def get_table_5_users_with_highest_number_of_req_code_5XX(self, **filters):
+    def get_table_users_with_highest_number_of_req_code_5XX(self, **filters):
         self.mysql.session.commit()
         res = self.mysql.session.query(HighestNumberRequestsIpModel).filter_by(**filters)
         return res.all()
 
 
 class TestSqlOrm(MyTest):
-
     table = None
 
-    def prepare(self):
+    def test_get_tables_1(self):
         self.builder.create_table_requests_total()
-        self.builder.create_table_requests_by_type()
-        self.builder.create_table_10_most_frequent_requests()
-        self.builder.create_table_5_longest_with_4XX()
-        self.builder.create_table_5_users_with_highest_number_of_req_code_5XX()
-
-    def test_get_tables(self):
         count = self.table_requests_total()
         assert len(count) == 1
 
+    def test_get_tables_2(self):
+        self.builder.create_table_requests_by_type()
         count = self.get_table_requests_by_type()
         assert len(count) == 4
 
-        count = self.get_table_10_most_frequent_requests()
-        assert len(count) == 10
+    def test_get_tables_3(self, number=10):
+        self.builder.create_table_most_frequent_requests(number)
+        count = self.get_table_most_frequent_requests()
+        assert len(count) == number
 
-        count = self.get_table_5_longest_with_4XX()
-        assert len(count) == 5
+    def test_get_tables_4(self, number=5):
+        self.builder.create_table_longest_with_4XX(number)
+        count = self.get_table_longest_with_4XX()
+        assert len(count) == number
 
-        count = self.get_table_5_users_with_highest_number_of_req_code_5XX()
-        assert len(count) == 5
+    def test_get_tables_5(self, number=5):
+        self.builder.create_table_users_with_highest_number_with_req_code_5XX(number)
+        count = self.get_table_users_with_highest_number_of_req_code_5XX()
+        assert len(count) == number
