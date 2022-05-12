@@ -46,7 +46,7 @@ def pytest_configure(config):
         app_stderr = open('/tmp/app_stderr', 'w')
         app_stdout = open('/tmp/app_stdout', 'w')
 
-        app_proc = subprocess.Popen(['python3.8', app_path],
+        app_proc = subprocess.Popen(['python3.10', app_path],
                                     stderr=app_stderr, stdout=app_stdout,
                                     env=env)
         wait_ready(settings.APP_HOST, settings.APP_PORT)
@@ -72,7 +72,7 @@ def pytest_configure(config):
         stub_stderr = open('/tmp/stub_stderr', 'w')
         stub_stdout = open('/tmp/stub_stdout', 'w')
 
-        stub_proc = subprocess.Popen(['python3.8', stub_path],
+        stub_proc = subprocess.Popen(['python3.10', stub_path],
                                      stderr=stub_stderr, stdout=stub_stdout,
                                      env=env)
         wait_ready(settings.STUB_HOST, settings.STUB_PORT)

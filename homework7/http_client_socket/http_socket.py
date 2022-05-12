@@ -1,7 +1,5 @@
 import socket
 import json
-import settings
-from _socket import timeout
 
 
 class Socket:
@@ -30,9 +28,6 @@ class Socket:
         return data
 
     def request_(self, type_req, params, data=None):
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.settimeout(0.5)
-        self.client.connect((self.host, self.port))
 
         request = f'{type_req} {params} HTTP/1.1\r\nHost:{self.host}:{self.port}\r\n'
 
@@ -42,15 +37,13 @@ class Socket:
         else:
             request += '\r\n'
 
-        self.client.send(request.encode())
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket_client:
+            self.client = socket_client
+            self.client.connect((self.host, self.port))
+            self.client.send(request.encode())
+            socket_data = self.get_data_from_socket()
 
-        try:
-            data = self.get_data_from_socket()
-        except:
-            self.client.close()
-            raise RuntimeError('Program was aborted because of problems with reading from socket')
-
-        return data
+        return socket_data
 
     def get_data_from_socket(self):
         total_data = []
